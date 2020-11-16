@@ -48,13 +48,28 @@ d3.csv("data.csv").then(function(smokerData) {
     var leftAxis = d3.axisLeft(yScale);
 
     
-  // Append the axes to the chartGroup - ADD STYLING
+  // Append the axes to the chartGroup 
   // Add bottomAxis
   chartGroup.append("g")
   .attr("transform", `translate(0, ${height})`)
   .call(bottomAxis);
 
+
+  // append circles to data points
+    var circlesGroup = chartGroup.selectAll("circle")
+        .data(smokerData)
+        .enter()
+        .append("circle")
+        .classed("stateCircle", true)
+        .attr("cx", d => xScale(d.smokes))
+        .attr("cy", d => yScale(d.age))
+        .attr("r", 12)
+        .attr("opacity", ".5");
   
+
+
+
+
 }).catch(function(error) {
   console.log(error);
 });
