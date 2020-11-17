@@ -6,7 +6,7 @@ var margin = {
   top: 20,
   right: 40,
   bottom: 60,
-  left: 50
+  left: 60
 };
 
 var width = svgWidth - margin.left - margin.right;
@@ -46,26 +46,6 @@ d3.csv("data.csv").then(function(smokerData) {
     var bottomAxis = d3.axisBottom(xScale);
     var leftAxis = d3.axisLeft(yScale);
 
-    
-  // // Append the axes to the chartGroup 
-  // // Add bottomAxis
-  // chartGroup.append("g")
-  // .attr("transform", `translate(0, ${height})`)
-  // .call(bottomAxis);
-
-
-  // // append circles to data points
-  //   var circlesGroup = chartGroup.selectAll("circle")
-  //       .data(smokerData)
-  //       .enter()
-  //       .append("circle")
-  //       .classed("stateCircle", true)
-  //       .attr("cx", d => xScale(d.smokes))
-  //       .attr("cy", d => yScale(d.age))
-  //       .attr("r", 12)
-  //       .attr("opacity", ".5");
-  
-
 
     //append x axis
     var xAxis = chartGroup.append("g")
@@ -100,6 +80,21 @@ d3.csv("data.csv").then(function(smokerData) {
     .attr("dy", 3)
     .attr("font-size", "10px")
     .text(function(d) {return d.abbr});
+
+  // text label for the y axis
+    svg.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 20)
+      .attr("x",0 - (height / 2))
+      .attr("dy", "1em")
+      //.style("text-anchor", "middle")
+      .text("Age");      
+
+  // text label for the x axis
+  svg.append("text")             
+  .attr("transform","translate(" + (width/2) + " ," + (height + margin.top + 40) + ")")
+  .style("text-anchor", "middle")
+  .text("Smokes (%)");
 
 }).catch(function(error) {
   console.log(error);
