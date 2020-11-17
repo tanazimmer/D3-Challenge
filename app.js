@@ -1,5 +1,4 @@
-// Step 1: Set up our chart
-//= ================================
+// Set up our chart
 var svgWidth = 960;
 var svgHeight = 500;
 
@@ -13,7 +12,7 @@ var margin = {
 var width = svgWidth - margin.left - margin.right;
 var height = svgHeight - margin.top - margin.bottom;
 
-// Select body, append SVG area to it, and set the dimensions
+// Select chart, append SVG area to it, and set the dimensions
 var svg = d3
   .select("body")
   .append("svg")
@@ -38,7 +37,7 @@ d3.csv("data.csv").then(function(smokerData) {
     .domain(d3.extent(smokerData, d => d.smokes))
     .range([0, width]);
 
-  var yScale = d3.scaleLinear()
+    var yScale = d3.scaleLinear()
     .domain([0, d3.max(smokerData, d => d.age)])
     .range([height, 0]);
 
@@ -48,14 +47,38 @@ d3.csv("data.csv").then(function(smokerData) {
     var leftAxis = d3.axisLeft(yScale);
 
     
-  // Append the axes to the chartGroup 
-  // Add bottomAxis
-  chartGroup.append("g")
-  .attr("transform", `translate(0, ${height})`)
-  .call(bottomAxis);
+  // // Append the axes to the chartGroup 
+  // // Add bottomAxis
+  // chartGroup.append("g")
+  // .attr("transform", `translate(0, ${height})`)
+  // .call(bottomAxis);
 
 
-  // append circles to data points
+  // // append circles to data points
+  //   var circlesGroup = chartGroup.selectAll("circle")
+  //       .data(smokerData)
+  //       .enter()
+  //       .append("circle")
+  //       .classed("stateCircle", true)
+  //       .attr("cx", d => xScale(d.smokes))
+  //       .attr("cy", d => yScale(d.age))
+  //       .attr("r", 12)
+  //       .attr("opacity", ".5");
+  
+
+
+    //append x axis
+    var xAxis = chartGroup.append("g")
+        .classed("x-axis", true)
+        .attr("transform", `translate(0, ${height})`)
+        .call(bottomAxis);
+
+    //append y axis
+    var yAxis = chartGroup.append("g")
+        .classed("y-axis", true)
+        .call(leftAxis);
+
+    //append circles
     var circlesGroup = chartGroup.selectAll("circle")
         .data(smokerData)
         .enter()
@@ -65,10 +88,18 @@ d3.csv("data.csv").then(function(smokerData) {
         .attr("cy", d => yScale(d.age))
         .attr("r", 12)
         .attr("opacity", ".5");
-  
 
-
-
+    //append text to circles
+    var textGroup = chartGroup.selectAll(".stateText")
+    .data(smokerData)
+    .enter()
+    .append("text")
+    .classed("stateText", true)
+    .attr("x", d => xScale(d.smokes))
+    .attr("y", d => yScale(d.age))
+    .attr("dy", 3)
+    .attr("font-size", "10px")
+    .text(function(d) {return d.abbr});
 
 }).catch(function(error) {
   console.log(error);
