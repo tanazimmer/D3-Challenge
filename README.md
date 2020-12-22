@@ -71,3 +71,4 @@ d3.csv("data.csv").then(function(smokerData) {
 ```
 
 * Note: You'll need to use `python -m http.server` to run the visualization. This will host the page at `localhost:8000` in your web browser.
+![smoker data](/Images/smokerdata.PNG)
